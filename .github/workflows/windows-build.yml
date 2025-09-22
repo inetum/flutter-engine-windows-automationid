@@ -11,10 +11,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run setup.bat
-        run: setup.bat
+        run: .\setup.bat
+        shell: cmd
 
       - name: Run build.bat
-        run: build.bat
+        run: .\build.bat
+        shell: cmd
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
