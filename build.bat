@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set "FLUTTER_VERSION=3.35.4"
+set "FLUTTER_VERSION=3.37.0-0.1.pre"
 set "FLUTTER_PR=175405,175406"
 
 echo Configure git
