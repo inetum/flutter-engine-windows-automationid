@@ -1,0 +1,23 @@
+name: Windows Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run setup.bat
+        run: setup.bat
+
+      - name: Run build.bat
+        run: build.bat
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-engine-windows-automationid-x64.zip
+          path: Downloads
