@@ -50,9 +50,10 @@ popd
 for %%p in (%FLUTTER_PR%) do (
 echo Get Flutter PR patch https://github.com/flutter/flutter/pull/%%p
 set "PATCHFILE=%USERPROFILE%\Downloads\flutter-PR%%p.patch"
-call curl.exe -s -# -L -o "%PATCHFILE%" "https://github.com/flutter/flutter/pull/%%p.patch" || exit /b 1
-echo Patch downloaded to %PATCHFILE%
-call git -C "%FLUTTER_DIR%" apply --reject "%PATCHFILE%" || exit /b 1
+echo Downloading patch to !PATCHFILE!
+call curl.exe -s -# -L -o "!PATCHFILE!" "https://github.com/flutter/flutter/pull/%%p.patch" || exit /b 1
+echo Patch downloaded to !PATCHFILE!
+call git -C "%FLUTTER_DIR%" apply --reject "!PATCHFILE!" || exit /b 1
 )
 
 echo Compile Flutter Engine
