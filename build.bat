@@ -1,5 +1,5 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 
 set "FLUTTER_VERSION=3.35.4"
 set "FLUTTER_PR=175405,175406"
