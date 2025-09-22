@@ -67,7 +67,8 @@ call ninja -C ./out/host_release || exit /b 1
 echo Archive Flutter Engine
 :: PowerShell Compress-Archive is too slow, use 7-Zip instead
 :: call powershell -Command "Compress-Archive -Force -DestinationPath '%USERPROFILE%\Downloads\flutter-%FLUTTER_VERSION%-engine-windows-automationid-x64.zip' -Path .\out"
-call "C:\Program Files\7-Zip\7z.exe" a -Tzip "%USERPROFILE%\Downloads\flutter-%FLUTTER_VERSION%-engine-PR%FLUTTER_PR%-x64.zip" .\out || exit /b 1
+mkdir ".\archive"
+call "C:\Program Files\7-Zip\7z.exe" a -Tzip ".\archive\flutter-%FLUTTER_VERSION%-engine-PR%FLUTTER_PR%-x64.zip" .\out || exit /b 1
 popd
 
 :eof
