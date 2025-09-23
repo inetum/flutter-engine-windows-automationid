@@ -22,4 +22,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: flutter-engine-windows-automationid-x64.zip
-          path: .\archive\*.zip
+          path: ${{ github.workspace }}/archive/*.zip
+          compression-level: 0
+
