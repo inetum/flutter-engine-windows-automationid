@@ -76,4 +76,4 @@ call robocopy %USERPROFILE%\Downloads %~dp0 %ARCHIVE_NAME% /NJH /NJS || exit /b 
 
 :eof
 endlocal
-exit /b %errorlevel%
+exit /b 0
