@@ -14,7 +14,7 @@ call git config --global core.preloadindex true || exit /b 1
 
 echo Install Chromium depot_tools
 :: https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up
-set "DEPOT_TOOLS_DIR=%USERPROFILE%\src\chromium.googlesource.com\chromium\tools\depot_tools"
+set "DEPOT_TOOLS_DIR=%CD%\src\chromium.googlesource.com\chromium\tools\depot_tools"
 if not exist "%DEPOT_TOOLS_DIR%" (
     call git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git "%DEPOT_TOOLS_DIR%" || exit /b 1
 )
@@ -28,7 +28,7 @@ set "WINDOWSSDKDIR=C:\Program Files (x86)\Windows Kits\10"
 
 echo Get Flutter source
 :: https://github.com/flutter/flutter/blob/master/engine/src/flutter/docs/contributing/Setting-up-the-Engine-development-environment.md
-set "FLUTTER_DIR=%USERPROFILE%\src\github.com\flutter\flutter"
+set "FLUTTER_DIR=%CD%\src\github.com\flutter\flutter"
 if not exist "%FLUTTER_DIR%" (
     call git clone https://github.com/flutter/flutter.git "%FLUTTER_DIR%" || exit /b 1
     call git -C "%FLUTTER_DIR%" remote rename origin upstream || exit /b 1
@@ -49,7 +49,8 @@ popd
 
 for %%p in (%FLUTTER_PR%) do (
 echo Get Flutter PR patch https://github.com/flutter/flutter/pull/%%p
-set "PATCHFILE=%USERPROFILE%\Downloads\flutter-PR%%p.patch"
+mkdir %CD%\Downloads 2>nul
+set "PATCHFILE=%CD%\Downloads\flutter-PR%%p.patch"
 echo Downloading patch to !PATCHFILE!
 call curl.exe -s -# -L -o "!PATCHFILE!" "https://github.com/flutter/flutter/pull/%%p.patch" || exit /b 1
 echo Patch downloaded to !PATCHFILE!
@@ -63,13 +64,13 @@ call python3 ./flutter/tools/gn --runtime-mode debug --no-lto || exit /b 1
 call ninja -C ./out/host_debug || exit /b 1
 call python3 ./flutter/tools/gn --runtime-mode release --lto || exit /b 1
 call ninja -C ./out/host_release || exit /b 1
+popd
 
 echo Archive Flutter Engine
+mkdir %CD%\Downloads 2>nul
 :: PowerShell Compress-Archive is too slow, use 7-Zip instead
-:: call powershell -Command "Compress-Archive -Force -DestinationPath '%USERPROFILE%\Downloads\flutter-%FLUTTER_VERSION%-engine-windows-automationid-x64.zip' -Path .\out"
-mkdir ".\archive"
-call "C:\Program Files\7-Zip\7z.exe" a -Tzip ".\archive\flutter-%FLUTTER_VERSION%-engine-PR%FLUTTER_PR%-x64.zip" .\out || exit /b 1
-popd
+:: call powershell -Command "Compress-Archive -Force -DestinationPath '%CD%\Downloads\flutter-%FLUTTER_VERSION%-engine-windows-automationid-x64.zip' -Path '%FLUTTER_DIR%\engine\src\out'"
+call "C:\Program Files\7-Zip\7z.exe" a -Tzip "%CD%\Downloads\flutter-%FLUTTER_VERSION%-engine-PR%FLUTTER_PR%-x64.zip" "%FLUTTER_DIR%\engine\src\out" || exit /b 1
 
 :eof
 endlocal

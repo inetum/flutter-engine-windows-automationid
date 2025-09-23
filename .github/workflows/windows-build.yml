@@ -10,22 +10,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # - name: Run setup.bat
-      #   run: .\setup.bat
-      #   shell: cmd
-
-      # - name: Run build.bat
-      #   run: .\build.bat
-      #   shell: cmd
+      - name: Run setup.bat
+        run: .\setup.bat
+        shell: cmd
 
       - name: Run build.bat
-        run: .\dummy.bat
+        run: .\build.bat
         shell: cmd
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: flutter-engine-windows-automationid-x64.zip
-          path: ${{ github.workspace }}/archive/*.zip
+          name: flutter-engine-windows-automationid-x64
+          path: ./Downloads/*.zip
           compression-level: 0
 
