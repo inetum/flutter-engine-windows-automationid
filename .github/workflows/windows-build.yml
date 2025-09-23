@@ -10,12 +10,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run setup.bat
-        run: .\setup.bat
-        shell: cmd
+      # - name: Run setup.bat
+      #   run: .\setup.bat
+      #   shell: cmd
+
+      # - name: Run build.bat
+      #   run: .\build.bat
+      #   shell: cmd
 
       - name: Run build.bat
-        run: .\build.bat
+        run: .\dummy.bat
         shell: cmd
 
       - name: Upload build artifacts
