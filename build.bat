@@ -59,6 +59,10 @@ call git -C "%FLUTTER_DIR%" apply --reject "!PATCHFILE!" || exit /b 1
 echo Compile Flutter Engine
 :: https://github.com/flutter/flutter/blob/master/engine/src/flutter/docs/contributing/Compiling-the-engine.md#compiling-for-windows
 pushd "%FLUTTER_DIR%\engine\src"
+call python3 ./flutter/tools/gn --runtime-mode debug --no-lto --no-enable-unittests || exit /b 1
+call ninja -C ./out/host_release || exit /b 1
+call python3 ./flutter/tools/gn --runtime-mode profile --lto --no-enable-unittests || exit /b 1
+call ninja -C ./out/host_release || exit /b 1
 call python3 ./flutter/tools/gn --runtime-mode release --lto --no-enable-unittests || exit /b 1
 call ninja -C ./out/host_release || exit /b 1
 popd
