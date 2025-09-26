@@ -1,8 +1,9 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set "FLUTTER_VERSION=3.35.4"
-set "FLUTTER_PR=173429,175405,175406"
+set "FLUTTER_VERSION=%~1"
+if "%FLUTTER_VERSION%"=="" set "FLUTTER_VERSION=master"
+set "FLUTTER_PR=%~2"
 
 echo Configure git
 call git config --global core.autocrlf false || exit /b 1
