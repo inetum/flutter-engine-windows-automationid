@@ -54,18 +54,3 @@ if not defined VSPATH (
 ) else (
     echo Visual Studio with Native Desktop workload is already installed at %VSPATH%.
 )
-
-echo Ensure 7zip is available
-for /f "usebackq tokens=*" %%i in (`where 7z`) do set "WHERE_SEVENZIP=%%i"
-set "SEVENZIP=%ProgramFiles%\7-Zip\7z.exe"
-if not defined WHERE_SEVENZIP (
-    if not exist "%SEVENZIP%" (
-        echo Installing 7zip...
-        call "%WINGET%" install --source=winget "7zip.7zip"
-    ) else (
-        echo 7zip found at %SEVENZIP%
-    )
-) else (
-    set "SEVENZIP=%WHERE_SEVENZIP%"
-    echo 7zip found at %SEVENZIP%
-)
