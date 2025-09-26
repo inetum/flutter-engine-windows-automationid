@@ -18,13 +18,13 @@ jobs:
         shell: cmd
 
       - name: Run build.bat
-        run: .\build.bat $FLUTTER_VERSION $FLUTTER_PR
+        run: .\build.bat %FLUTTER_VERSION% %FLUTTER_PR%
         shell: cmd
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: flutter_windows_$FLUTTER_VERSION-PR$FLUTTER_PR
+          name: flutter_windows_${{ env.FLUTTER_VERSION }}-PR${{ env.FLUTTER_PR }}
           path: ./**/flutter_windows.dll
           compression-level: 0
 
