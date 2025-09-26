@@ -63,11 +63,11 @@ call python3 ./flutter/tools/gn --runtime-mode release --lto --no-enable-unittes
 call ninja -C ./out/host_release || exit /b 1
 popd
 
-echo Archive Flutter Engine
-set "ARCHIVE_NAME=flutter-%FLUTTER_VERSION%-engine-PR%FLUTTER_PR%-x64.zip"
+@REM echo Archive Flutter Engine
+@REM set "ARCHIVE_NAME=flutter-%FLUTTER_VERSION%-engine-PR%FLUTTER_PR%-x64.zip"
 :: PowerShell Compress-Archive is too slow, use 7-Zip instead
 :: call powershell -Command "Compress-Archive -Force -DestinationPath '%USERPROFILE%\Downloads\flutter-%FLUTTER_VERSION%-engine-windows-automationid-x64.zip' -Path '%FLUTTER_DIR%\engine\src\out'"
-call "C:\Program Files\7-Zip\7z.exe" a -Tzip "%CD%\%ARCHIVE_NAME%" "%FLUTTER_DIR%\engine\src\out" || exit /b 1
+@REM call "C:\Program Files\7-Zip\7z.exe" a -Tzip "%CD%\%ARCHIVE_NAME%" "%FLUTTER_DIR%\engine\src\out" || exit /b 1
 
 :eof
 endlocal
