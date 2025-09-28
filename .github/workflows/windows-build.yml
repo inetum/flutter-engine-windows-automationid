@@ -25,6 +25,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: flutter_windows_${{ env.FLUTTER_VERSION }}-PR${{ env.FLUTTER_PR }}
-          path: ./**/flutter_windows.dll
+          path: |
+            ./**/flutter_windows.dll*
+            ./flutter_windows_*.zip
           compression-level: 0
 
