@@ -37,20 +37,28 @@ if not exist "%VSWHERE%" (
     echo Visual Studio Locator found at %VSWHERE%.
 )
 
-echo Ensure Visual Studio with Native Desktop workload is available
-for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -requires Microsoft.VisualStudio.Workload.NativeDesktop -property installationPath`) do set "VSPATH=%%i"
+set "VS_PACKAGE_ID=Microsoft.VisualStudio.2022.BuildTools"
+set "VS_PACKAGE_TEXT=Visual Studio 2022 Build Tools"
+set "VS_WORKLOAD_ID=Microsoft.VisualStudio.Workload.VCTools"
+set "VS_WORKLOAD_TEXT=Desktop development with C++"
+@REM set "VS_PACKAGE_ID=Microsoft.VisualStudio.2022.Community"
+@REM set "VS_PACKAGE_TEXT=Visual Studio 2022 Community"
+@REM set "VS_WORKLOAD_ID=Microsoft.VisualStudio.Workload.NativeDesktop"
+@REM set "VS_WORKLOAD_TEXT=Native Desktop"
+echo Ensure Visual Studio with %VS_WORKLOAD_TEXT% workload is available
+for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -requires %VS_WORKLOAD_ID% -property installationPath`) do set "VSPATH=%%i"
 if not defined VSPATH (
     for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -property installationPath`) do set "VSPATH=%%i"
     if not defined VSPATH (
-        echo Installing Visual Studio 2022 Community Edition with Native Desktop workload...
-        call "%WINGET%" uninstall --source=winget "Microsoft.VisualStudio.2022.Community"
-        call "%WINGET%" install --source=winget "Microsoft.VisualStudio.2022.Community" --override "--wait --quiet --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --includeOptional --norestart"
+        echo Installing %VS_PACKAGE_TEXT% with %VS_WORKLOAD_TEXT% workload...
+        call "%WINGET%" uninstall --source=winget "%VS_PACKAGE_ID%"
+        call "%WINGET%" install --source=winget "%VS_PACKAGE_ID%" --override "--wait --quiet --add %VS_WORKLOAD_ID% --includeRecommended --includeOptional --norestart"
     ) else (
         echo Visual Studio found at %VSPATH%
-        echo Adding Native Desktop workload...
+        echo Adding %VS_WORKLOAD_TEXT% workload...
         set "VSINSTALLER=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe"
-        call "%VSINSTALLER%" modify --installPath "%VSPATH%" --quiet --norestart --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --includeOptional
+        call "%VSINSTALLER%" modify --installPath "%VSPATH%" --quiet --norestart --add %VS_WORKLOAD_ID% --includeRecommended --includeOptional
     )
 ) else (
-    echo Visual Studio with Native Desktop workload is already installed at %VSPATH%.
+    echo Visual Studio with %VS_WORKLOAD_TEXT% workload is already installed at %VSPATH%.
 )
