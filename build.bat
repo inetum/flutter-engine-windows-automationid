@@ -15,7 +15,7 @@ call git config --global core.preloadindex true || exit /b 1
 
 echo Install Chromium depot_tools
 :: https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up
-set "DEPOT_TOOLS_DIR=%CD%\depot_tools"
+set "DEPOT_TOOLS_DIR=%CD%\depot_tools.git"
 if not exist "%DEPOT_TOOLS_DIR%" (
     call git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git "%DEPOT_TOOLS_DIR%" || exit /b 1
 )
@@ -29,7 +29,7 @@ set "WINDOWSSDKDIR=C:\Program Files (x86)\Windows Kits\10"
 
 echo Get Flutter source
 :: https://github.com/flutter/flutter/blob/master/engine/src/flutter/docs/contributing/Setting-up-the-Engine-development-environment.md
-set "FLUTTER_DIR=%CD%\flutter"
+set "FLUTTER_DIR=%CD%\flutter.git"
 if not exist "%FLUTTER_DIR%" (
     call git clone https://github.com/flutter/flutter.git "%FLUTTER_DIR%" || exit /b 1
     call git -C "%FLUTTER_DIR%" remote rename origin upstream || exit /b 1
@@ -69,15 +69,13 @@ call python3 ./flutter/tools/gn --runtime-mode release --lto --no-enable-unittes
 call ninja -C ./out/host_release || exit /b 1
 popd
 
-mkdir archive\flutter\bin\cache\artifacts\engine\windows-x64 || exit /b 1
-copy /y "%FLUTTER_DIR%\engine\src\out\host_debug\flutter_windows.dll*" "archive\flutter\bin\cache\artifacts\engine\windows-x64" || exit /b 1
-mkdir archive\flutter\bin\cache\artifacts\engine\windows-x64-release || exit /b 1
-copy /y "%FLUTTER_DIR%\engine\src\out\host_release\flutter_windows.dll*" "archive\flutter\bin\cache\artifacts\engine\windows-x64-release" || exit /b 1
-mkdir archive\flutter\bin\cache\artifacts\engine\windows-x64-profile || exit /b 1
-copy /y "%FLUTTER_DIR%\engine\src\out\host_profile\flutter_windows.dll*" "archive\flutter\bin\cache\artifacts\engine\windows-x64-profile" || exit /b 1
-pushd archive || exit /b 1
-powershell -Command "Compress-Archive -Path * -DestinationPath ../flutter_windows_%FLUTTER_VERSION%_PR%FLUTTER_PR%.zip" || exit /b 1
-popd
+mkdir flutter\bin\cache\artifacts\engine\windows-x64 || exit /b 1
+copy /y "%FLUTTER_DIR%\engine\src\out\host_debug\flutter_windows.dll*" "flutter\bin\cache\artifacts\engine\windows-x64" || exit /b 1
+mkdir flutter\bin\cache\artifacts\engine\windows-x64-release || exit /b 1
+copy /y "%FLUTTER_DIR%\engine\src\out\host_release\flutter_windows.dll*" "flutter\bin\cache\artifacts\engine\windows-x64-release" || exit /b 1
+mkdir flutter\bin\cache\artifacts\engine\windows-x64-profile || exit /b 1
+copy /y "%FLUTTER_DIR%\engine\src\out\host_profile\flutter_windows.dll*" "flutter\bin\cache\artifacts\engine\windows-x64-profile" || exit /b 1
+powershell -Command "Compress-Archive -Path flutter -DestinationPath flutter_windows_%FLUTTER_VERSION%_PR%FLUTTER_PR%.zip" || exit /b 1
 
 :eof
 endlocal
