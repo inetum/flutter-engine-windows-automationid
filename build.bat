@@ -48,7 +48,8 @@ call gclient sync -D || exit /b 1
 popd
 )
 
-for %%p in (%FLUTTER_PR%) do (
+set "FLUTTER_PR_LIST=%FLUTTER_PR%"
+for %%p in (%FLUTTER_PR_LIST%) do (
 echo Get Flutter PR patch https://github.com/flutter/flutter/pull/%%p
 set "PATCHFILE=%CD%\flutter-PR%%p.patch"
 echo Downloading patch to !PATCHFILE!
