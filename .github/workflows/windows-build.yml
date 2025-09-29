@@ -26,3 +26,10 @@ jobs:
         with:
           name: flutter_windows_${{ env.FLUTTER_VERSION }}_PR${{ env.FLUTTER_PR }}
           path: flutter/**/flutter_windows.dll*
+
+      - name: Create release
+        run: |
+          $NOW=& Get-Date -format yyyy-MM-dd_HH-mm-ss
+          hub release create $NOW -a flutter_windows_${{ env.FLUTTER_VERSION }}_PR${{ env.FLUTTER_PR }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
