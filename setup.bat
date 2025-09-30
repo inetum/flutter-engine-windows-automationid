@@ -62,3 +62,5 @@ if not defined VSPATH (
 ) else (
     echo Visual Studio with %VS_WORKLOAD_TEXT% workload is already installed at %VSPATH%.
 )
+
+winget install --id=GitHub.hub  -e
