@@ -69,13 +69,15 @@ call python3 ./flutter/tools/gn --runtime-mode release --lto --no-enable-unittes
 call ninja -C ./out/host_release || exit /b 1
 popd
 
-mkdir flutter\bin\cache\artifacts\engine\windows-x64 || exit /b 1
-copy /y "%FLUTTER_DIR%\engine\src\out\host_debug\flutter_windows.dll*" "flutter\bin\cache\artifacts\engine\windows-x64" || exit /b 1
-mkdir flutter\bin\cache\artifacts\engine\windows-x64-release || exit /b 1
-copy /y "%FLUTTER_DIR%\engine\src\out\host_release\flutter_windows.dll*" "flutter\bin\cache\artifacts\engine\windows-x64-release" || exit /b 1
-mkdir flutter\bin\cache\artifacts\engine\windows-x64-profile || exit /b 1
-copy /y "%FLUTTER_DIR%\engine\src\out\host_profile\flutter_windows.dll*" "flutter\bin\cache\artifacts\engine\windows-x64-profile" || exit /b 1
-powershell -Command "Compress-Archive -Path flutter -DestinationPath flutter_windows_%FLUTTER_VERSION%_PR%FLUTTER_PR%.zip" || exit /b 1
+mkdir archive\flutter\bin\cache\artifacts\engine\windows-x64 || exit /b 1
+copy /y "%FLUTTER_DIR%\engine\src\out\host_debug\flutter_windows.dll*" "archive\flutter\bin\cache\artifacts\engine\windows-x64" || exit /b 1
+mkdir archive\flutter\bin\cache\artifacts\engine\windows-x64-release || exit /b 1
+copy /y "%FLUTTER_DIR%\engine\src\out\host_release\flutter_windows.dll*" "archive\flutter\bin\cache\artifacts\engine\windows-x64-release" || exit /b 1
+mkdir archive\flutter\bin\cache\artifacts\engine\windows-x64-profile || exit /b 1
+copy /y "%FLUTTER_DIR%\engine\src\out\host_profile\flutter_windows.dll*" "archive\flutter\bin\cache\artifacts\engine\windows-x64-profile" || exit /b 1
+pushd archive || exit /b 1
+powershell -Command "Compress-Archive -Path flutter -DestinationPath ../flutter_windows_%FLUTTER_VERSION%_PR%FLUTTER_PR%.zip" || exit /b 1
+popd
 
 :eof
 endlocal
