@@ -25,4 +25,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: flutter_windows_${{ env.FLUTTER_VERSION }}_PR${{ env.FLUTTER_PR }}
-          path: archive/**/flutter_windows.dll*
+          path: flutter/**/flutter_windows.dll*
