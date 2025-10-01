@@ -62,12 +62,3 @@ if not defined VSPATH (
 ) else (
     echo Visual Studio with %VS_WORKLOAD_TEXT% workload is already installed at %VSPATH%.
 )
-
-echo Ensure GitHub CLI is available
-for /f "usebackq tokens=*" %%i in (`where hub`) do set "WHERE_HUB=%%i"
-if not defined WHERE_HUB (
-    echo Installing GitHub CLI...
-    call "%WINGET%" install --source winget "GitHub.hub"
-) else (
-    echo GitHub CLI found at %WHERE_HUB%
-)
