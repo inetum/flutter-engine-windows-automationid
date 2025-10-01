@@ -54,10 +54,11 @@ if not defined VSPATH (
         call "%WINGET%" uninstall --source=winget "%VS_PACKAGE_ID%"
         call "%WINGET%" install --source=winget "%VS_PACKAGE_ID%" --override "--wait --quiet --add %VS_WORKLOAD_ID% --includeRecommended --includeOptional --norestart"
     ) else (
-        echo Visual Studio found at %VSPATH%
+        for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -property displayName`) do set "VSDISPLAY=%%i"
+        echo !VSDISPLAY! found at !VSPATH!
         echo Adding %VS_WORKLOAD_TEXT% workload...
-        set "VSINSTALLER=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vs_installer.exe"
-        call "%VSINSTALLER%" modify --installPath "%VSPATH%" --quiet --norestart --add %VS_WORKLOAD_ID% --includeRecommended --includeOptional
+        for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -property setupEngineFilePath`) do set "VSINSTALLER=%%i"
+        call "!VSINSTALLER!" modify --installPath "!VSPATH!" --quiet --norestart --add %VS_WORKLOAD_ID% --includeRecommended --includeOptional
     )
 ) else (
     echo Visual Studio with %VS_WORKLOAD_TEXT% workload is already installed at %VSPATH%.
