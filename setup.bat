@@ -40,13 +40,10 @@ if not exist "%VSWHERE%" (
 set "VS_PACKAGE_ID=Microsoft.VisualStudio.2022.BuildTools"
 set "VS_PACKAGE_TEXT=Visual Studio 2022 Build Tools"
 set "VS_WORKLOAD_ID=Microsoft.VisualStudio.Workload.VCTools"
+set "VS_WORKLOAD_ID_2=Microsoft.VisualStudio.Workload.NativeDesktop"
 set "VS_WORKLOAD_TEXT=Desktop development with C++"
-@REM set "VS_PACKAGE_ID=Microsoft.VisualStudio.2022.Community"
-@REM set "VS_PACKAGE_TEXT=Visual Studio 2022 Community"
-@REM set "VS_WORKLOAD_ID=Microsoft.VisualStudio.Workload.NativeDesktop"
-@REM set "VS_WORKLOAD_TEXT=Native Desktop"
 echo Ensure Visual Studio with %VS_WORKLOAD_TEXT% workload is available
-for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -requires %VS_WORKLOAD_ID% -property installationPath`) do set "VSPATH=%%i"
+for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -requiresAny -requires %VS_WORKLOAD_ID% -requires %VS_WORKLOAD_ID_2% -property installationPath`) do set "VSPATH=%%i"
 if not defined VSPATH (
     for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -property installationPath`) do set "VSPATH=%%i"
     if not defined VSPATH (
@@ -56,9 +53,15 @@ if not defined VSPATH (
     ) else (
         for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -property displayName`) do set "VSDISPLAY=%%i"
         echo !VSDISPLAY! found at !VSPATH!
+        for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -property productId`) do set "VSPRODUCTID=%%i"
+        if !VSPRODUCTID! neq "Microsoft.VisualStudio.Product.BuildTools" (
+            set "VS_ADD_WORKLOAD=%VS_WORKLOAD_ID_2%"
+        ) else (
+            set "VS_ADD_WORKLOAD=%VS_WORKLOAD_ID%"
+        )
         echo Adding %VS_WORKLOAD_TEXT% workload...
         for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -property setupEngineFilePath`) do set "VSINSTALLER=%%i"
-        call "!VSINSTALLER!" modify --installPath "!VSPATH!" --quiet --norestart --add %VS_WORKLOAD_ID% --includeRecommended --includeOptional
+        call "!VSINSTALLER!" modify --installPath "!VSPATH!" --quiet --norestart --add !VS_ADD_WORKLOAD! --includeRecommended --includeOptional
     )
 ) else (
     echo Visual Studio with %VS_WORKLOAD_TEXT% workload is already installed at %VSPATH%.
