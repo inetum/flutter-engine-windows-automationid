@@ -53,7 +53,7 @@ for %%p in (%FLUTTER_PR_LIST:.= %) do (
 echo Get Flutter PR patch https://github.com/flutter/flutter/pull/%%p
 set "PATCHFILE=%CD%\flutter-PR%%p.patch"
 echo Downloading patch to !PATCHFILE!
-call curl.exe -s -# -L -o "!PATCHFILE!" "https://github.com/flutter/flutter/pull/%%p.patch" || exit /b 1
+call powershell -Command "Invoke-WebRequest -Uri 'https://github.com/flutter/flutter/pull/%%p.patch' -OutFile '!PATCHFILE!'" || exit /b 1
 echo Patch downloaded to !PATCHFILE!
 call git -C "%FLUTTER_DIR%" apply --reject "!PATCHFILE!" || exit /b 1
 )
