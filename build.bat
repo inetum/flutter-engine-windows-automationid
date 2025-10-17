@@ -63,18 +63,22 @@ echo Compile Flutter Engine
 pushd "%FLUTTER_DIR%\engine\src"
 call python3 ./flutter/tools/gn --runtime-mode debug --no-lto --no-enable-unittests || exit /b 1
 call ninja -C ./out/host_debug || exit /b 1
+if not defined DEBUG_ONLY (
 call python3 ./flutter/tools/gn --runtime-mode profile --lto --no-enable-unittests || exit /b 1
 call ninja -C ./out/host_profile || exit /b 1
 call python3 ./flutter/tools/gn --runtime-mode release --lto --no-enable-unittests || exit /b 1
 call ninja -C ./out/host_release || exit /b 1
+)
 popd
 
 mkdir flutter\bin\cache\artifacts\engine\windows-x64 || exit /b 1
 copy /y "%FLUTTER_DIR%\engine\src\out\host_debug\flutter_windows.dll*" "flutter\bin\cache\artifacts\engine\windows-x64" || exit /b 1
+if not defined DEBUG_ONLY (
 mkdir flutter\bin\cache\artifacts\engine\windows-x64-release || exit /b 1
 copy /y "%FLUTTER_DIR%\engine\src\out\host_release\flutter_windows.dll*" "flutter\bin\cache\artifacts\engine\windows-x64-release" || exit /b 1
 mkdir flutter\bin\cache\artifacts\engine\windows-x64-profile || exit /b 1
 copy /y "%FLUTTER_DIR%\engine\src\out\host_profile\flutter_windows.dll*" "flutter\bin\cache\artifacts\engine\windows-x64-profile" || exit /b 1
+)
 powershell -Command "Compress-Archive -Path flutter -DestinationPath flutter_windows_%FLUTTER_VERSION%_PR%FLUTTER_PR%.zip" || exit /b 1
 
 :eof
