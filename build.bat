@@ -44,6 +44,11 @@ call git pull
 call git checkout %FLUTTER_VERSION%
 call git reset --hard %FLUTTER_VERSION% || exit /b 1
 copy /y engine\scripts\standard.gclient .gclient || exit /b 1
+popd
+)
+
+if not defined NO_GCLIENT_SYNC (
+pushd "%FLUTTER_DIR%" || exit /b 1
 call gclient sync -D || exit /b 1
 popd
 )
