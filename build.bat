@@ -2,7 +2,6 @@
 setlocal enabledelayedexpansion
 
 set "FLUTTER_VERSION=%~1"
-if "%FLUTTER_VERSION%"=="" set "FLUTTER_VERSION=master"
 set "FLUTTER_PR=%~2"
 
 echo Configure git
