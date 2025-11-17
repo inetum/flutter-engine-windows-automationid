@@ -77,6 +77,9 @@ call ninja -C ./out/host_release || exit /b 1
 )
 popd
 
+echo Package Flutter Engine artifacts
+if exist "flutter\bin\cache\artifacts\engine" ( rmdir /s /q "flutter\bin\cache\artifacts\engine" || exit /b 1 )
+if exist "flutter_windows_%FLUTTER_VERSION%_PR%FLUTTER_PR%.zip" ( del /q "flutter_windows_%FLUTTER_VERSION%_PR%FLUTTER_PR%.zip" || exit /b 1 )
 mkdir flutter\bin\cache\artifacts\engine\windows-x64 || exit /b 1
 copy /y "%FLUTTER_DIR%\engine\src\out\host_debug\flutter_windows.dll*" "flutter\bin\cache\artifacts\engine\windows-x64" || exit /b 1
 if not defined DEBUG_ONLY (
@@ -86,6 +89,7 @@ mkdir flutter\bin\cache\artifacts\engine\windows-x64-profile || exit /b 1
 copy /y "%FLUTTER_DIR%\engine\src\out\host_profile\flutter_windows.dll*" "flutter\bin\cache\artifacts\engine\windows-x64-profile" || exit /b 1
 )
 powershell -Command "Compress-Archive -Path flutter -DestinationPath flutter_windows_%FLUTTER_VERSION%_PR%FLUTTER_PR%.zip" || exit /b 1
+echo Flutter Engine artifacts packaged to flutter_windows_%FLUTTER_VERSION%_PR%FLUTTER_PR%.zip
 
 :eof
 endlocal
