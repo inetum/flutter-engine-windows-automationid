@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: windows-2022
     env:
-      FLUTTER_VERSION: "3.38.3"
+      FLUTTER_VERSION: "3.38.4"
       FLUTTER_PR: "175405.175406"
     steps:
       - name: Checkout repository
@@ -26,3 +26,4 @@ jobs:
         with:
           name: flutter_windows_${{ env.FLUTTER_VERSION }}_PR${{ env.FLUTTER_PR }}
           path: flutter/**/flutter_windows.dll*
+
