@@ -7,7 +7,7 @@ powershell -NoProfile -Command ^
     "$msRootsUrl = 'https://ccadb.my.salesforce-sites.com/microsoft/IncludedCACertificateReportForMSFTCSV'; " ^
     "$customRootsDir = 'custom_roots'; " ^
     "Remove-Item -Recurse -Force $customRootsDir -ErrorAction SilentlyContinue; " ^
-    "$csvContent = Invoke-WebRequest -Uri $msRootsUrl | Select-Object -ExpandProperty Content; " ^
+    "$csvContent = Invoke-WebRequest -Uri $msRootsUrl -UseBasicParsing | Select-Object -ExpandProperty Content; " ^
     "$msThumbprints = $csvContent | ConvertFrom-Csv | ForEach-Object { ($_.\"SHA-1 Fingerprint\" -replace ' ', '').ToUpper() }; " ^
     "New-Item -ItemType Directory -Path $customRootsDir -Force | Out-Null; " ^
     "Get-ChildItem -Path Cert:\LocalMachine\Root | ForEach-Object { " ^
@@ -19,5 +19,5 @@ powershell -NoProfile -Command ^
     "        Export-Certificate -Cert $_ -FilePath $certPath | Out-Null; " ^
     "    } " ^
     "}; " ^
-    "Write-Output 'Custom trusted root certificates exported to $customRootsDir.'"
+    "Write-Output \"Custom trusted TLS root certificates exported to $customRootsDir.\""
 
