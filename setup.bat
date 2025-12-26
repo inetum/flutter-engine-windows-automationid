@@ -37,8 +37,8 @@ if not exist "%VSWHERE%" (
     echo Visual Studio Locator found at %VSWHERE%.
 )
 
-set "VS_PACKAGE_ID=Microsoft.VisualStudio.2022.Community"
-set "VS_PACKAGE_TEXT=Visual Studio 2022 Community Edition"
+set "VS_PACKAGE_ID=Microsoft.VisualStudio.Community"
+set "VS_PACKAGE_TEXT=Visual Studio Community Edition"
 set "VS_WORKLOAD_ID=Microsoft.VisualStudio.Workload.NativeDesktop"
 set "VS_WORKLOAD_TEXT=Desktop development with C++"
 echo Ensure Visual Studio with %VS_WORKLOAD_TEXT% workload is available
