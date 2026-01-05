@@ -2,5 +2,9 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "gusztavvargadr/windows-11"
+  config.vm.box = "bento/windows-11"
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 16384
+    vb.cpus = 8
+  end
 end
