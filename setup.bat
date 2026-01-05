@@ -47,14 +47,14 @@ if not defined VSPATH (
     for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -property installationPath`) do set "VSPATH=%%i"
     if not defined VSPATH (
         echo Installing %VS_PACKAGE_TEXT% with %VS_WORKLOAD_TEXT% workload...
-        call "%WINGET%" install --source=winget "%VS_PACKAGE_ID%" --override "--wait --quiet --add %VS_WORKLOAD_ID% --includeRecommended --norestart"
+        call "%WINGET%" install --source=winget "%VS_PACKAGE_ID%" --override "--wait --quiet --norestart --add %VS_WORKLOAD_ID% --includeRecommended --includeOptional"
     ) else (
         for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -property displayName`) do set "VSDISPLAY=%%i"
         echo !VSDISPLAY! found at !VSPATH!
         for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -property productId`) do set "VSPRODUCTID=%%i"
         echo Adding %VS_WORKLOAD_TEXT% workload...
         for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -property setupEngineFilePath`) do set "VSINSTALLER=%%i"
-        call "!VSINSTALLER!" modify --installPath "!VSPATH!" --quiet --norestart --add !VS_WORKLOAD_ID! --includeRecommended
+        call "!VSINSTALLER!" modify --installPath "!VSPATH!" --quiet --norestart --add !VS_WORKLOAD_ID! --includeRecommended --includeOptional
     )
 ) else (
     echo Visual Studio with %VS_WORKLOAD_TEXT% workload is already installed at %VSPATH%.
