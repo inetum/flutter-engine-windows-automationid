@@ -22,6 +22,9 @@ set "PATH=%DEPOT_TOOLS_DIR%;%PATH%"
 
 echo Configure depot_tools for Windows
 set "DEPOT_TOOLS_WIN_TOOLCHAIN=0"
+set "VSWHERE=C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
+for /f "usebackq tokens=*" %%i in (`"%VSWHERE%" -latest -requires Microsoft.VisualStudio.Workload.NativeDesktop -property installationPath`) do set "GYP_MSVS_OVERRIDE_PATH=%%i"
+set "WINDOWSSDKDIR=C:\Program Files (x86)\Windows Kits\10"
 
 echo Get Flutter source
 :: https://github.com/flutter/flutter/blob/master/engine/src/flutter/docs/contributing/Setting-up-the-Engine-development-environment.md
