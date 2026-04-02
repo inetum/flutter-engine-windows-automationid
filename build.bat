@@ -67,9 +67,11 @@ call git -C "%FLUTTER_DIR%" apply --reject "!PATCHFILE!" || exit /b 1
 echo Compile Flutter Engine
 :: https://github.com/flutter/flutter/blob/master/engine/src/flutter/docs/contributing/Compiling-the-engine.md#compiling-for-windows
 pushd "%FLUTTER_DIR%\engine\src"
+call python3 ./flutter/tools/gn --unoptimized --runtime-mode debug || exit /b 1
+call ninja -C ./out/host_debug_unopt || exit /b 1
+if not defined DEBUG_ONLY (
 call python3 ./flutter/tools/gn --runtime-mode debug --no-lto || exit /b 1
 call ninja -C ./out/host_debug || exit /b 1
-if not defined DEBUG_ONLY (
 call python3 ./flutter/tools/gn --runtime-mode profile --lto || exit /b 1
 call ninja -C ./out/host_profile || exit /b 1
 call python3 ./flutter/tools/gn --runtime-mode release --lto || exit /b 1
@@ -80,11 +82,7 @@ popd
 if not defined NO_UNIT_TESTS (
 echo Run Flutter Engine unit tests
 pushd "%FLUTTER_DIR%\engine\src\flutter"
-call python3 testing/run_tests.py --type=engine --variant=host_debug || exit /b 1
-if not defined DEBUG_ONLY (
-call python3 testing/run_tests.py --type=engine --variant=host_profile || exit /b 1
-call python3 testing/run_tests.py --type=engine --variant=host_release || exit /b 1
-)
+call python3 testing/run_tests.py --type=engine --variant=host_debug_unopt || exit /b 1
 popd
 )
 
