@@ -55,6 +55,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  bool _buttonEnabled = false;
 
   void _incrementCounter() {
     setState(() {
@@ -64,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+      _buttonEnabled = !_buttonEnabled;
     });
   }
 
@@ -110,6 +112,13 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            ),
+            Semantics(
+              identifier: 'button', child:
+              FloatingActionButton(
+                onPressed: _buttonEnabled ? _incrementCounter : null,
+                child: Icon(_buttonEnabled ? Icons.toggle_on : Icons.toggle_off),
+              ), // This trailing comma makes auto-formatting nicer for build methods.
             ),
           ],
         ),
